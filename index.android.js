@@ -11,8 +11,8 @@ import {
   Text,
   View
 } from 'react-native';
-import LoginForm from './components/LoginForm';
-import App from './components/App';
+
+import App from './app/components/App';
 
 export default class AwesomeProject extends Component {
   render() {
