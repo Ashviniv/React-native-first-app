@@ -1,25 +1,45 @@
 import React, {Component} from 'react';
 import { AppRegistry, StyleSheet, Text, View, TextInput, ListView, Image, Button, Alert } from 'react-native';
+import * as actionCreators from '../actions/index.js';
+import { connect } from 'react-redux';
 
-export default class LoginForm extends Component{
+class LoginForm extends Component{
   constructor(props){
     super(props)
     this.state = {
     	email: '', 
     	password: '', 
-      logo: require('./josh.png')
+      logo: require('./josh.png'),
+      disableLogin: true,
+      errorMsg: '',
+      loggedIn: false,
+      error: {
+        email: '',
+        password: ''
+      }
     }
+    this.errorMsg = ''
     this.onChangeEmail = this.onChangeEmail.bind(this)
     this.onChangePassword = this.onChangePassword.bind(this)
     this.onLoginClicked = this.onLoginClicked.bind(this)
   }
 
   render(){
+    
   	return(
   	  <View style={styles.container}>
         <Image source={this.state.logo} />
+        <Text>{"\n"}</Text>
+        <Text style={styles.error}> {this.props.errorMsg} </Text>
+        <Text style={styles.error}>{this.state.error.email}</Text>
+        <Text style={styles.error}>{this.state.error.password}</Text>
         <Text> {this.props.text} </Text>
-        <TextInput placeholder="Enter an email" onChangeText={this.onChangeEmail} value={this.state.email} autoFocus/>
+        
+        <TextInput placeholder="Enter an email" 
+          onChangeText={this.onChangeEmail} 
+          value={this.state.email} 
+          autoFocus
+        />
         <TextInput 
           placeholder="Enter password" 
           onChangeText ={this.onChangePassword} 
@@ -29,11 +49,11 @@ export default class LoginForm extends Component{
           enablesReturnKeyAutomatically 
         />
         <Text>{"\n"}</Text>
+
         <Button
 				  onPress={this.onLoginClicked}
 				  title="Login"
 				  color="#6495ed"
-				  accessibilityLabel="Learn more about this purple button"
 				/>
       </View>
 
@@ -41,25 +61,43 @@ export default class LoginForm extends Component{
   }
   
   onChangeEmail(email){
+    if(email === ''){
+      this.errorMsg = "Email Cannot be blank";
+    }
+    else{
+      let res = email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/);
+      if(res == null){
+        this.errorMsg = "Invalid Email format"
+      }
+      else{
+        this.errorMsg = ''
+      }
+    }
+    this.setState({error: {email: this.errorMsg}})
+    this.setState({errorMsg: this.errorMsg})
     this.setState({email})
+    
   }
 
   onChangePassword(password){
+    if(password === ''){
+      this.errorMsg = "Password Cannot be blank"
+    }
+    else{
+      if(password.length < 8){
+        this.errorMsg = "Password length must be greater than 8."
+      }
+      else{
+        this.errorMsg = ''
+      }
+    }
+    this.setState({error: {password: this.errorMsg}})
+    this.setState({errorMsg: this.errorMsg})
     this.setState({password})
   }
 
   onLoginClicked(){
-    if(this.state.email === '' || this.state.password === ''){
-      Alert.alert("email/password cannot be blank." , this.state.email, this.state.password)
-    }
-    else{
-      if(this.state.email === 'ashvini@josh.com' || this.state.password === 'josh123'){
-        this.props.navigator.push({name: 'Dashboard', title: "index 1"})
-      } 
-      else{
-        Alert.alert("email/password is invalid.") 
-      }   
-    }
+    this.props.handleSubmitForm(this.state.email, this.state.password, this.props.navigator)
   }
  
 }
@@ -80,5 +118,22 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 20,
     padding: 10
+  },
+  error: {
+    color: 'red'
   }
 });
+
+function mapStateToProps(state) {
+  return state.LoginReducer;
+}
+
+export default connect(
+  mapStateToProps,
+  {
+    handleSubmitForm: actionCreators.submitLoginForm,
+    handleLoginSuccess: actionCreators.successfullLogin,
+    handleLoginFailure: actionCreators.failedLogin,
+    changeInput: actionCreators.changeInput
+  }
+)(LoginForm);

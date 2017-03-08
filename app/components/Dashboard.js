@@ -1,18 +1,25 @@
 import React, {Component} from 'react';
-import { Text, TouchableHighlight } from 'react-native';
+import { View,Text, TouchableHighlight } from 'react-native';
 
 export default class Dashboard extends Component {
   constructor(props){
     super(props);
+    this.logout = this.logout.bind(this)
   }
   
   render(){
     return (
-      <TouchableHighlight >
-        <Text>Hello {this.props.title} !!</Text>
-      </TouchableHighlight>
-
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <TouchableHighlight>
+          <Text style={{fontSize: 20, fontFamily: 'bold'}}>{this.props.title}</Text>
+        </TouchableHighlight>
+        <Text onPress={this.logout}> Logout</Text>
+      </View>
     );
+  }
+
+  logout(){
+    this.props.navigator.pop()
   }
   
 }

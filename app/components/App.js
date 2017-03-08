@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import { Text, Navigator, TouchableHighlight } from 'react-native';
 import LoginForm from './LoginForm';
 import Dashboard from './Dashboard';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from '../reducers/rootReducer';
+import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default class App extends Component {
   constructor(props){
@@ -11,12 +17,14 @@ export default class App extends Component {
 
   render(){
     return (
-      <Navigator
-        initialRoute={{name: 'Login'}}
-        renderScene={this.renderScene}
-        configureScene={(route, routeStack) =>
-          Navigator.SceneConfigs.HorizontalSwipeJumpFromRight}
-      />
+      <Provider store={store}>
+        <Navigator
+          initialRoute={{name: 'Login'}}
+          renderScene={this.renderScene}
+          configureScene={(route, routeStack) =>
+            Navigator.SceneConfigs.HorizontalSwipeJumpFromRight}
+        />
+      </Provider>
     );
   }
   
