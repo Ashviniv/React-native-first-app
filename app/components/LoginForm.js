@@ -27,35 +27,36 @@ class LoginForm extends Component{
   render(){
     
   	return(
-  	  <View style={styles.container}>
-        <Image source={this.state.logo} />
-        <Text>{"\n"}</Text>
-        <Text style={styles.error}> {this.props.errorMsg} </Text>
-        <Text style={styles.error}>{this.state.error.email}</Text>
-        <Text style={styles.error}>{this.state.error.password}</Text>
-        <Text> {this.props.text} </Text>
-        
-        <TextInput placeholder="Enter an email" 
-          onChangeText={this.onChangeEmail} 
-          value={this.state.email} 
-          autoFocus
-        />
-        <TextInput 
-          placeholder="Enter password" 
-          onChangeText ={this.onChangePassword} 
-          value={this.state.password} 
-          autoFocus
-          secureTextEntry 
-          enablesReturnKeyAutomatically 
-        />
-        <Text>{"\n"}</Text>
 
-        <Button
-				  onPress={this.onLoginClicked}
-				  title="Login"
-				  color="#6495ed"
-				/>
-      </View>
+    	  <View style={styles.container}>
+          <View style={styles.logo}>
+          <Image source={this.state.logo} />
+          </View>
+          <Text>{"\n"}</Text>
+          <Text style={styles.error}> {this.props.errorMsg} </Text>
+          <Text> {this.props.text} </Text>
+          
+          <TextInput placeholder="Enter an email" 
+            onChangeText={this.onChangeEmail} 
+            value={this.state.email} 
+            autoFocus
+          />
+          <TextInput 
+            placeholder="Enter password" 
+            onChangeText ={this.onChangePassword} 
+            value={this.state.password} 
+            autoFocus
+            secureTextEntry 
+            enablesReturnKeyAutomatically 
+          />
+          <Text>{"\n"}</Text>
+
+          <Button
+  				  onPress={this.onLoginClicked}
+  				  title="Login"
+  				  color="#6495ed"
+  				/>
+        </View>
 
   	);
   }
@@ -104,15 +105,14 @@ class LoginForm extends Component{
 
 const styles = StyleSheet.create({
   container: {
-  	flex: 1, 
   	flexDirection: 'column', 
-  	alignItems: 'stretch',
   	padding: 20, 
   	justifyContent: 'center'
   },
 
   logo: {
-  	justifyContent: 'center',
+    flex: 1,
+  	alignItems: 'center',
   }
   ,
   textStyle: {

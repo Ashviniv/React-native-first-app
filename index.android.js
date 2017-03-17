@@ -11,6 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
+import UserProfile from './app/components/UserProfile';
 
 import App from './app/components/App';
 

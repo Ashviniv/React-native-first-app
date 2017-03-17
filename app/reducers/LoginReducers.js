@@ -21,4 +21,25 @@ const LoginReducer = (state = initialState, action) => {
        return state
   }
 }
+UserInitialState = {
+  name: '',
+  dob: "",
+  profile_completed: '',
+  age: 0
+}
+
+export const UserReducer = (state = UserInitialState, action) => {
+  switch (action.type) {
+    case 'ADD_USER': 
+       return {
+        ...state,
+        name: action.email,
+        dob: action.dob,
+        profile_completed: action.profile_completed,
+        age: action.age
+       }
+    default:
+      return state
+  }
+}
 export default LoginReducer;

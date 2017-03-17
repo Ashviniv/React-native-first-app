@@ -31,6 +31,7 @@ const validateEmailPassword = (email, password) => {
 }
 
 
+
 export const submitLoginForm = (email, password, navigator) => {
   return (dispatch) => {
 
@@ -54,5 +55,15 @@ export const submitLoginForm = (email, password, navigator) => {
         dispatch(failedLogin(validateEmailPassword(email, password)))
 	    }
     }
+  }
+}
+
+export const addUser = (name, dob, age, profile_completed) => {
+  return{
+    type: "ADD_USER",
+    name: name,
+    dob: dob,
+    age: age,
+    profile_completed: profile_completed
   }
 }
